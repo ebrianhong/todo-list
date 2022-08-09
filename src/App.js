@@ -1,25 +1,27 @@
-import React, {useState} from 'react';
+import React, { useReducer } from 'react';
 import Input from './components/Input';
 import List from './components/List';
+import ItemsContext from './contexts/ItemsContext';
+import { itemReducer } from './reducers';
 
 const App = () => {
-  const [items, setItems] = useState([
+  const [items, dispatch] = useReducer(itemReducer, [
     {
-      id: 1,
-      todo: 'dummy1',
-      completed: true
-    },
-    {
-      id: 2,
-      todo: 'dummy2',
+      id: JSON.stringify(new Date()),
+      todo: 'item1',
       completed: false
     }
-  ]);
+  ])
 
   return (
     <div id="app">
-      <Input items={items} setItems={setItems} />
-      <List items={items} setItems={setItems} />
+      <ItemsContext.Provider value={{
+        items,
+        dispatch
+      }}>
+        <Input />
+        <List />
+      </ItemsContext.Provider>
     </div>
   )
 }

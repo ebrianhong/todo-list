@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import ItemsContext from '../contexts/ItemsContext';
 import Item from './Item';
 
-const List = ({items, setItems}) => {
+const List = () => {
+  const { items } = useContext(ItemsContext);
+
   return (
     <div id="list">
       <ul>
-        {items.map((item, i) => {
-          return <Item key={i} item={item} items={items} setItems={setItems} />
+        {items.map((item) => {
+          return <Item key={item?.id} item={item}/>
         })}
       </ul>
     </div>

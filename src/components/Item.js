@@ -1,22 +1,49 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import ItemsContext from '../contexts/ItemsContext';
 
-const Item = ({item, items, setItems}) => {
-  if (item.id === 1) console.log(item.completed)
-  const handleClick = (e) => {
-    const newItems = items.map((curr) => {
-      return curr.id === item.id ? {...curr, completed: !curr.completed} : {...curr};
-    })
-    setItems(newItems);
+const Item = ({ item }) => {
+  const { dispatch } = useContext(ItemsContext);
+
+  const toggleComplete = (e) => {
+    // e.preventDefault();
+    dispatch({
+      type: 'COMPLETE',
+      id: item.id,
+    });
   }
+
+  const deleteItem = (e) => {
+    // e.preventDefault();
+    dispatch({
+      type: 'REMOVE',
+      id: item.id,
+    });
+  }
+
   return (
-    <div id="item">
-      <input 
-        type="checkbox" 
-        onChange={(e) => {handleClick(e)}}
-        checked={item.completed}
-      ></input>
-      <span>{item.todo}</span>
-    </div>
+    <>
+      <div id="item" 
+        onClick={(e) => {toggleComplete(e)}}
+        className={item.completed ? 'checked' : 'unchecked'}
+        style={{
+          textDecoration: item.completed ? 'line-through' : '',
+          cursor: 'pointer'
+        }}
+      >
+        <input 
+          type="checkbox" 
+          checked={item.completed}
+          readOnly
+          style={{
+            cursor: 'pointer'
+          }}
+        ></input>
+        <span>{item.todo}</span>
+      </div>
+      <button 
+        onClick={(e) => {deleteItem(e)}}
+      >delete</button>
+    </>
   )
 }
 

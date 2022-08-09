@@ -1,19 +1,16 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
+import ItemsContext from '../contexts/ItemsContext';
 
-const Input = ({items, setItems}) => {
+const Input = () => {
   const [input, setInput] = useState('');
-
+  const { dispatch } = useContext(ItemsContext);
   const submitHandler = (e) => {
     e.preventDefault();
-    const updatedItems = [
-      ...items, 
-      {
-        id: Date.now(),
-        todo: input,
-        completed: false
-      }
-    ]
-    setItems(updatedItems);
+    dispatch({
+      type: 'ADD',
+      id: JSON.stringify(new Date()),
+      todo: input,
+    })
     setInput('');
   }
   return (
